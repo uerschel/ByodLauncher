@@ -19,7 +19,7 @@ namespace ByodLauncher.Controllers
         {
             _configuration = configuration;
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<string> GetNotebookSpecs(string notebookModell)
         {
             MultipartFormDataContent content = new MultipartFormDataContent();
@@ -29,7 +29,7 @@ namespace ByodLauncher.Controllers
             var client = GetHttpClient();
             var result = await client.PostAsync("/", content);
 
-            return result.StatusCode.ToString();
+            return await result.Content.ReadAsStringAsync();
         }
 
         private HttpClient GetHttpClient()
