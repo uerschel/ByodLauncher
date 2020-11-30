@@ -13,7 +13,7 @@ namespace ByodLauncher.Models
         public string Gpu { get; set; }
         public float ScreenSize { get; set; }
         public float Ram { get; set; }
-
+        public float Memory { get; set; }
 
     }
 }
