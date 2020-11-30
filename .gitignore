@@ -37,3 +37,5 @@ Desktop.ini
 .DS_Store
 /secret.local
 /todo.md
+
+appsettings.json/appsettings.Development.json
