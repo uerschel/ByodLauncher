@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,16 +22,17 @@ namespace ByodLauncher.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public async Task<Rootobject> GetNotebookSpecs(string notebookModell)
+        public async Task<NotebookResult> GetNotebookSpecs(string notebookModell)
         {
             MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
             var client = GetHttpClient();
             var result = await client.PostAsync("", content);
 
             var resultString = await result.Content.ReadAsStringAsync();
-            Rootobject notebook = JsonConvert.DeserializeObject<Rootobject>(resultString, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
-            return notebook;
+            JObject jo = JObject.Parse(resultString);
+            NotebookResult nbResult = jo.ToObject<NotebookResult>();
+            nbResult.NotebookName = (string)jo.SelectToken("result.0.model_info[0].name");
+            return nbResult;
         }
 
         private MultipartFormDataContent GenerateContent(string notebookModell, string method)
