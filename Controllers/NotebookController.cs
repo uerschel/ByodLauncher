@@ -22,14 +22,23 @@ namespace ByodLauncher.Controllers
         [HttpGet]
         public async Task<string> GetNotebookSpecs(string notebookModell)
         {
-            MultipartFormDataContent content = new MultipartFormDataContent();
-            content.Add(new StringContent(_configuration["Endpoints:ApiKeyNoteB"]), "apikey");
-            content.Add(new StringContent(notebookModell), "param[model_name]");
-            content.Add(new StringContent("list_models"), "method");
+            MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
             var client = GetHttpClient();
-            var result = await client.PostAsync("/", content);
+            var result = await client.PostAsync("", content);
 
             return await result.Content.ReadAsStringAsync();
+        }
+
+        private MultipartFormDataContent GenerateContent(string notebookModell, string method)
+        {
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            content.Add(new StringContent(_configuration["Endpoints:ApiKeyNoteB"]), "apikey");
+
+            if (!string.IsNullOrEmpty(notebookModell))
+                content.Add(new StringContent(notebookModell), "param[model_name]");
+
+            content.Add(new StringContent(method), "method");
+            return content;
         }
 
         private HttpClient GetHttpClient()
