@@ -22,17 +22,32 @@ namespace ByodLauncher.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public async Task<NotebookResult> GetNotebookSpecs(string notebookModell)
+        public async Task<Notebook> GetNotebookSpecs(string notebookModell)
         {
             MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
             var client = GetHttpClient();
             var result = await client.PostAsync("", content);
 
             var resultString = await result.Content.ReadAsStringAsync();
+            return GenerateNotebookFromResult(resultString);
+        }
+
+        private static Notebook GenerateNotebookFromResult(string resultString)
+        {
             JObject jo = JObject.Parse(resultString);
-            NotebookResult nbResult = jo.ToObject<NotebookResult>();
-            nbResult.NotebookName = (string)jo.SelectToken("result.0.model_info[0].name");
-            return nbResult;
+            Notebook notebook = jo.ToObject<Notebook>();
+            notebook.Brand = (string)jo.SelectToken("result.0.model_info[0].name");
+            notebook.CpuBrand = (string)jo.SelectToken("result.0.cpu.prod");
+            notebook.CpuModel = (string)jo.SelectToken("result.0.cpu.model");
+            notebook.GpuBrand = (string)jo.SelectToken("result.0.gpu.prod");
+            notebook.GpuModel = (string)jo.SelectToken("result.0.gpu.model");
+            notebook.GpuMemorySize = (string)jo.SelectToken("result.0.gpu.memory_size");
+            notebook.ScreenSize = (string)jo.SelectToken("result.0.display.size");
+            notebook.RamSize = (string)jo.SelectToken("result.0.memory.size");
+            notebook.RamType = (string)jo.SelectToken("result.0.memory.type");
+            notebook.StorageType = (string)jo.SelectToken("result.0.primary_storage.model");
+            notebook.StorageSize = (string)jo.SelectToken("result.0.primary_storage.cap");
+            return notebook;
         }
 
         private MultipartFormDataContent GenerateContent(string notebookModell, string method)
