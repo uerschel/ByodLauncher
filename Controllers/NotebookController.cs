@@ -28,8 +28,9 @@ namespace ByodLauncher.Controllers
             var result = await client.PostAsync("", content);
 
             var resultString = await result.Content.ReadAsStringAsync();
-            Rootobject notebook = JsonConvert.DeserializeObject<Rootobject>(resultString, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
-
+            var data = JsonConvert.DeserializeObject<Rootobject>(resultString);
+            Rootobject notebook = new Rootobject();
+            notebook = JsonConvert.DeserializeObject<Rootobject>(resultString, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             return notebook;
         }
 
