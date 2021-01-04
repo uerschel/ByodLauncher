@@ -1,71 +1,72 @@
 {
     "Informatiker/in": {
         "cpu": {
-            "brand1": "intel",
-            "model1": "",
-            "brand2": "amd",
-            "model2": ""
+            "brand": "intel",
+            "model": ""
         },
         "gpu": {
             "model": "names",
             "brand": "nvidia",
-            "size": "2000"
+            "memory_size": "2000"
         },
         "memory": {
-            "size": "8Gb",
+            "size": "8",
             "type": "DDR4"
         },
-        "storage": {
+        "primary_storage": {
             "type": "DDR4",
-            "size": "256Gb"
+            "size": "256"
         },
-        "screensize": "13.3"
+        "display": {
+            "size": "14"
+        }
 
     },
+
     "Elektroker/in": {
         "cpu": {
-            "brand1": "",
-            "model1": "",
-            "brand2": "",
-            "model2": ""
+            "brand": "",
+            "model": ""
         },
         "gpu": {
             "model": "",
             "brand": "",
-            "size": ""
+            "memory_size": ""
         },
         "memory": {
-            "size": "16Gb",
+            "size": "16",
             "type": "DDR4"
         },
-        "storage": {
+        "primary_storage": {
             "type": "SSD",
-            "size": "256Gb"
+            "size": "256"
         },
-        "screensize": "12"
+        "display": {
+            "size": "14"
+        }
 
     },
     "Automobil-Mechatroniker/in": {
         "cpu": {
-            "brand1": "intel",
-            "model1": "i5",
-            "brand2": "",
-            "model2": ""
+            "brand": "intel",
+            "model": "i5"
         },
         "gpu": {
             "model": "",
             "brand": "",
-            "size": ""
+            "memory_size": ""
         },
         "memory": {
-            "size": "8Gb",
+            "size": "8",
             "type": "DDR4"
         },
-        "storage": {
+        "primary_storage": {
             "type": "SSD",
-            "size": "256Gb"
+            "size": "256"
         },
-        "screensize": "14"
+        "display": {
+            "size": "14"
+        }
 
     }
 }

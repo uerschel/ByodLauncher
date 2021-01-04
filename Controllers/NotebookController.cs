@@ -5,9 +5,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ByodLauncher.Controllers
 {
@@ -21,8 +23,8 @@ namespace ByodLauncher.Controllers
         {
             _configuration = configuration;
         }
-        [HttpGet]
-        public async Task<Notebook> GetNotebookSpecs(string notebookModell)
+
+        private async Task<Notebook> GetNotebookSpecs(string notebookModell)
         {
             MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
             var client = GetHttpClient();
@@ -50,6 +52,25 @@ namespace ByodLauncher.Controllers
             return notebook;
         }
 
+
+        private static Notebook GenerateNotebookFromProfession(string profession)
+        {
+            string file = File.ReadAllText(@".\Specs\SpecsAllJobs.json");
+            JObject jo = (JObject)JsonConvert.DeserializeObject(file);
+            Notebook notebook = new Notebook();
+            notebook.CpuBrand = (string)jo.SelectToken(profession + ".cpu.brand");
+            notebook.CpuModel = (string)jo.SelectToken(profession + ".cpu.model");
+            notebook.GpuBrand = (string)jo.SelectToken(profession + ".gpu.brand");
+            notebook.GpuModel = (string)jo.SelectToken(profession + ".gpu.model");
+            notebook.GpuMemorySize = (string)jo.SelectToken(profession + ".gpu.memory_size");
+            notebook.ScreenSize = (string)jo.SelectToken(profession + ".display.size");
+            notebook.RamSize = (string)jo.SelectToken(profession + ".memory.size");
+            notebook.RamType = (string)jo.SelectToken(profession + ".memory.type");
+            notebook.StorageType = (string)jo.SelectToken(profession + ".primary_storage.type");
+            notebook.StorageSize = (string)jo.SelectToken(profession + ".primary_storage.size");
+            return notebook;
+        }
+
         private MultipartFormDataContent GenerateContent(string notebookModell, string method)
         {
             MultipartFormDataContent content = new MultipartFormDataContent();
@@ -60,6 +81,22 @@ namespace ByodLauncher.Controllers
 
             content.Add(new StringContent(method), "method");
             return content;
+        }
+
+        [HttpGet]
+        public async Task<NotebookComparer> CompareNotebookSpecs(string notebookModell, string lehrberuf)
+        {
+            MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
+            var client = GetHttpClient();
+            var result = await client.PostAsync("", content);
+
+            var resultString = await result.Content.ReadAsStringAsync();
+            Notebook notebookUser = GenerateNotebookFromResult(resultString);
+            Notebook notebookProfession = GenerateNotebookFromProfession(lehrberuf);
+
+            NotebookComparer notebookComparer = new NotebookComparer(notebookUser, notebookProfession);
+
+            return notebookComparer;
         }
 
         private HttpClient GetHttpClient()

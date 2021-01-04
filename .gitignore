@@ -38,4 +38,5 @@ Desktop.ini
 /secret.local
 /todo.md
 
+*/appsettings.*
 appsettings.*
