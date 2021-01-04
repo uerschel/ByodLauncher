@@ -26,12 +26,32 @@ namespace ByodLauncher.Controllers
 
         private async Task<Notebook> GetNotebookSpecs(string notebookModell)
         {
+
             MultipartFormDataContent content = GenerateContent(notebookModell, "get_model_info");
             var client = GetHttpClient();
             var result = await client.PostAsync("", content);
 
             var resultString = await result.Content.ReadAsStringAsync();
             return GenerateNotebookFromResult(resultString);
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<string[]> GetAllNotebookModells()
+        {
+            MultipartFormDataContent content = GenerateContent("", "list_models");
+            var client = GetHttpClient();
+            var result = await client.PostAsync("", content);
+            List<string> allModels = new List<string>();
+            var resultString = await result.Content.ReadAsStringAsync();
+            JObject jo = JObject.Parse(resultString);
+            int count = jo.SelectToken("result").Count();
+            for (int i = 0; i < jo.SelectToken("result").Count(); i++)
+            {
+                allModels.Add((string)jo.SelectToken($"result.{i}.model_info[0].name"));
+            }
+
+            return allModels.ToArray();
         }
 
         private static Notebook GenerateNotebookFromResult(string resultString)
@@ -78,6 +98,8 @@ namespace ByodLauncher.Controllers
 
             if (!string.IsNullOrEmpty(notebookModell))
                 content.Add(new StringContent(notebookModell), "param[model_name]");
+            else
+                content.Add(new StringContent(""), "param[model_name]");
 
             content.Add(new StringContent(method), "method");
             return content;
