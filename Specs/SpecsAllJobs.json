@@ -1,0 +1,71 @@
+{
+    "Informatiker/in": {
+        "cpu": {
+            "brand1": "intel",
+            "model1": "",
+            "brand2": "amd",
+            "model2": ""
+        },
+        "gpu": {
+            "model": "names",
+            "brand": "nvidia",
+            "size": "2000"
+        },
+        "memory": {
+            "size": "8Gb",
+            "type": "DDR4"
+        },
+        "storage": {
+            "type": "DDR4",
+            "size": "256Gb"
+        },
+        "screensize": "13.3"
+
+    },
+    "Elektroker/in": {
+        "cpu": {
+            "brand1": "",
+            "model1": "",
+            "brand2": "",
+            "model2": ""
+        },
+        "gpu": {
+            "model": "",
+            "brand": "",
+            "size": ""
+        },
+        "memory": {
+            "size": "16Gb",
+            "type": "DDR4"
+        },
+        "storage": {
+            "type": "SSD",
+            "size": "256Gb"
+        },
+        "screensize": "12"
+
+    },
+    "Automobil-Mechatroniker/in": {
+        "cpu": {
+            "brand1": "intel",
+            "model1": "i5",
+            "brand2": "",
+            "model2": ""
+        },
+        "gpu": {
+            "model": "",
+            "brand": "",
+            "size": ""
+        },
+        "memory": {
+            "size": "8Gb",
+            "type": "DDR4"
+        },
+        "storage": {
+            "type": "SSD",
+            "size": "256Gb"
+        },
+        "screensize": "14"
+
+    }
+}
