@@ -8,6 +8,8 @@ import AttendSession from '../views/AttendSession.vue'
 import OrchestrateSession from "@/views/OrchestrateSession.vue";
 import EditSession from "@/views/EditSession.vue";
 import Login from "@/views/Login.vue";
+import NotebookChecker from "@/views/NotebookChecker.vue";
+
 
 Vue.use(VueRouter);
 
@@ -53,6 +55,11 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login
+    },
+    {
+        path: '/notebookchecker',
+        name: 'notebook checker',
+        component: NotebookChecker
     }
     // {
     //   path: '/about',
@@ -61,7 +68,8 @@ const routes = [
     //   // this generates a separate chunk (about.[hash].js) for this route
     //   // which is lazy-loaded when the route is visited.
     //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    // }
+    // }import Vue from './../shims-vue.d';
+
 ];
 
 const router = new VueRouter({
