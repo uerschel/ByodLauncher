@@ -16,12 +16,16 @@ namespace ByodLauncher.Models
 
         public NotebookComparer(Notebook notebookUser, Notebook notebookProfession)
         {
+            float RamTypeProfession = float.Parse(Regex.Match(notebookProfession.RamType, @"\d+").Value);
+            float RamTypeUser = float.Parse(Regex.Match(notebookUser.RamType, @"\d+").Value);
+            float RamSizeProfession = float.Parse(Regex.Match(notebookProfession.RamSize, @"\d+").Value);
+            float RamSizeUser = float.Parse(Regex.Match(notebookUser.RamSize, @"\d+").Value);
+
             ScreenRequirement = NumberComparer(float.Parse(notebookUser.ScreenSize), float.Parse(notebookProfession.ScreenSize));
             StorageRequirement = NumberComparer(float.Parse(notebookUser.StorageSize), float.Parse(notebookProfession.StorageSize));
             ScreenRequirement = NumberComparer(float.Parse(notebookUser.RamSize), float.Parse(notebookProfession.RamSize));
+            RamRequirement = NumberComparer(RamSizeUser, RamSizeProfession);
             StorageTypeRequirement = notebookProfession.StorageType == "SSD" ? (notebookUser.StorageType == "SSD" ? Requirement.good : Requirement.bad) : (notebookUser.StorageType == "SSD" ? Requirement.good : Requirement.ok);
-            float RamTypeProfession = float.Parse(Regex.Match(notebookProfession.RamType, @"\d+").Value);
-            float RamTypeUser = float.Parse(Regex.Match(notebookUser.RamType, @"\d+").Value);
             RamTypeRequirement = NumberComparer(RamTypeUser, RamTypeProfession);
         }
 
@@ -38,7 +42,7 @@ namespace ByodLauncher.Models
                 return Requirement.good;
             }else if(numberUser >= numberProfession * 0.95){
                 return Requirement.ok;
-            }else if(numberUser <= numberProfession * 09.5){
+            }else if(numberUser < numberProfession * 0.95){
                 return Requirement.bad;
             }
             return Requirement.bad;
@@ -47,8 +51,8 @@ namespace ByodLauncher.Models
 
     public enum Requirement
     {
-        good = 3,
+        bad = 1,
         ok = 2,
-        bad = 1
+        good = 3,
     }
 }

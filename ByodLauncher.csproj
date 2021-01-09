@@ -57,6 +57,8 @@
         </ItemGroup>
     </Target>
 
+    <ProjectExtensions><VisualStudio><UserProperties wwwroot_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
     <!--  <ItemGroup>-->
     <!--    <TypeScriptCompile Include="wwwroot\src\api\api.ts" />-->
     <!--    <TypeScriptCompile Include="wwwroot\src\api\directorApi.ts" />-->
