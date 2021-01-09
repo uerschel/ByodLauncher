@@ -22,12 +22,7 @@
           cols="12"
           sm="6"
         >
-          <v-text-field
-      label="Notebook modell"
-      :rules="rules"
-      v-model="modell"
-      hide-details="auto"
-    ></v-text-field>       
+          <v-autocomplete :items="allModels" v-model="modell"></v-autocomplete>      
         </v-col>
       </v-row>
       <v-row align="center">
@@ -46,10 +41,15 @@
 
       </v-row>
     </v-container>
+    <div @v-if="isCompareClicked">
+  <v-alert
+  type="success"
+>{{answerText}}</v-alert>
+    </div>
   </v-app>
 </div>
-    
 </template>
+
 
 <script lang="ts">
 
@@ -57,31 +57,27 @@
     import axios from 'axios';
     @Component
     export default class NotebookChecker extends Vue {
-      created(){
-        axios.get("https://localhost:44369/api/notebook/all").then(models => { this.allModels.push(models)});
+      mounted(){
+        fetch("https://localhost:44369/api/notebook/all").then(res => res.json()).then(json => this.allModels = json);
       }
-      allModels = [];
+      allModels = {type: Array};
       // THIS SHOULD BE UPDATED AT A LATER POINT, SO IT ISN'T HARDCODED BUT RATHER PULLS ALL THE 
       // DIFFERENT LEHRBERUFE FROM THE SERVER
-        lehrberufe = ["Informatiker/in", "Elektroker/in", "Automobil-Mechatroniker/in"];
-        rules = [
-        value => !!value || 'Required.',
-        value => (value && value.length >= 3) || 'Min 3 characters',
-      ];
+      lehrberufe = ["Informatiker/in", "Elektroker/in", "Automobil-Mechatroniker/in"];
       modell = "";
       selectedLehrberuf = "";
+      isCompareClicked = false;
+      answerText = "";
       async compareNotebook() {
-        try{
           const result = await axios.get("https://localhost:44369/api/notebook", {
             params: {
               notebookModell: this.modell,
-              //lehrberuf: this.selectedLehrberuf
+              lehrberuf: this.selectedLehrberuf
             }
           });
-          console.log(result);
-        } catch(err){
-          
-        }
+          const data = result.data;
+          this.answerText = data.ramRequirement;
+          console.log(this.answerText);
       }
     }
 </script>
