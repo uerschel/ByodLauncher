@@ -9,6 +9,12 @@ namespace ByodLauncher.Models
     public class NotebookComparer
     {
         public Requirement ScreenRequirement { get; set; }
+        //public Status Screenrequirement { get; set; }
+        /*status:{
+         * type:
+         * message:
+         *}
+         */
         public Requirement StorageRequirement { get; set; }
         public Requirement RamRequirement { get; set; }
         public Requirement StorageTypeRequirement { get; set; }
@@ -47,7 +53,11 @@ namespace ByodLauncher.Models
             }
             return Requirement.bad;
         }
+
     }
+
+    // not requirement
+    // status: {type: success,warning,error  message:}
 
     public enum Requirement
     {
