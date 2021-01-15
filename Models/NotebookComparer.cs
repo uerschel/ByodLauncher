@@ -8,17 +8,17 @@ namespace ByodLauncher.Models
 {
     public class NotebookComparer
     {
-        public Requirement ScreenRequirement { get; set; }
+        public Status ScreenRequirement { get; set; }
         //public Status Screenrequirement { get; set; }
         /*status:{
          * type:
          * message:
          *}
          */
-        public Requirement StorageRequirement { get; set; }
-        public Requirement RamRequirement { get; set; }
-        public Requirement StorageTypeRequirement { get; set; }
-        public Requirement RamTypeRequirement { get; set; }
+        public Status StorageRequirement { get; set; }
+        public Status RamRequirement { get; set; }
+        public Status StorageTypeRequirement { get; set; }
+        public Status RamTypeRequirement { get; set; }
 
         public NotebookComparer(Notebook notebookUser, Notebook notebookProfession)
         {
@@ -31,7 +31,8 @@ namespace ByodLauncher.Models
             StorageRequirement = NumberComparer(float.Parse(notebookUser.StorageSize), float.Parse(notebookProfession.StorageSize));
             ScreenRequirement = NumberComparer(float.Parse(notebookUser.RamSize), float.Parse(notebookProfession.RamSize));
             RamRequirement = NumberComparer(RamSizeUser, RamSizeProfession);
-            StorageTypeRequirement = notebookProfession.StorageType == "SSD" ? (notebookUser.StorageType == "SSD" ? Requirement.good : Requirement.bad) : (notebookUser.StorageType == "SSD" ? Requirement.good : Requirement.ok);
+            StorageTypeRequirement = notebookProfession.StorageType == "SSD" ? (notebookUser.StorageType == "SSD" ? this.GoodStatus() : this.BadStatus()) : 
+                (notebookUser.StorageType == "SSD" ? this.GoodStatus() : this.OkStatus("We recommend using a SSD"));
             RamTypeRequirement = NumberComparer(RamTypeUser, RamTypeProfession);
         }
 
@@ -41,20 +42,50 @@ namespace ByodLauncher.Models
         /// <param name="numberProfession">float of spec of profession</param>
         /// <param name="numberUser">flaot of spec of usersnotebook</param>
         /// <returns>good if user>proffesion, ok if 5%margin, bad else</returns>
-        private Requirement NumberComparer(float numberProfession, float numberUser)
+        private Status NumberComparer(float numberProfession, float numberUser)
         {
+            Status status = new Status();
             if (numberUser > numberProfession)
             {
-                return Requirement.good;
+                status.Type = "Good";
+                status.Message = "";
             }else if(numberUser >= numberProfession * 0.95){
-                return Requirement.ok;
-            }else if(numberUser < numberProfession * 0.95){
-                return Requirement.bad;
+                status.Type = "Ok";
+                status.Message = "Should be powerful enough. We still recommend getting a better component";
             }
-            return Requirement.bad;
+            else if(numberUser < numberProfession * 0.95){
+                status.Type = "Bad";
+                status.Message = "";
+            }
+            return status;
+        }
+        private Status GoodStatus()
+        {
+            Status status = new Status();
+            status.Type = "Good";
+            status.Message = "";
+            return status;
+        }
+
+        private Status BadStatus()
+        {
+            Status status = new Status();
+            status.Type = "Bad";
+            status.Message = "";
+            return status;
+        }
+
+        private Status OkStatus(string message)
+        {
+            Status status = new Status();
+            status.Type = "Ok";
+            status.Message = message;
+            return status;
         }
 
     }
+
+
 
     // not requirement
     // status: {type: success,warning,error  message:}
