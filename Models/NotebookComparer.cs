@@ -29,7 +29,6 @@ namespace ByodLauncher.Models
 
             ScreenRequirement = NumberComparer(float.Parse(notebookUser.ScreenSize), float.Parse(notebookProfession.ScreenSize));
             StorageRequirement = NumberComparer(float.Parse(notebookUser.StorageSize), float.Parse(notebookProfession.StorageSize));
-            ScreenRequirement = NumberComparer(float.Parse(notebookUser.RamSize), float.Parse(notebookProfession.RamSize));
             RamRequirement = NumberComparer(RamSizeUser, RamSizeProfession);
             StorageTypeRequirement = notebookProfession.StorageType == "SSD" ? (notebookUser.StorageType == "SSD" ? this.GoodStatus() : this.BadStatus()) : 
                 (notebookUser.StorageType == "SSD" ? this.GoodStatus() : this.OkStatus("We recommend using a SSD"));
@@ -59,6 +58,7 @@ namespace ByodLauncher.Models
             }
             return status;
         }
+
         private Status GoodStatus()
         {
             Status status = new Status();
