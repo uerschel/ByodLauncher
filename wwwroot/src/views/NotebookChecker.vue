@@ -33,6 +33,9 @@
           >{{ status.name }} ({{ status.specs }}): {{ status.message }}</v-alert
         >
       </div>
+      <a href="https://noteb.com" style="font-weight: bold;color:#3f8f86;"
+        >Powered by noteb.com</a
+      >
     </v-app>
   </div>
 </template>
