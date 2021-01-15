@@ -41,11 +41,10 @@
 
       </v-row>
     </v-container>
-    <div @v-if="isCompareClicked">
   <v-alert
-  type="success"
->{{answerText}}</v-alert>
-    </div>
+  v-bind:type="ram.status"
+  v-bind:v-show="isShown"
+>{{ram.status}}</v-alert>
   </v-app>
 </div>
 </template>
@@ -59,15 +58,15 @@
     export default class NotebookChecker extends Vue {
       mounted(){
         fetch("https://localhost:44369/api/notebook/all").then(res => res.json()).then(json => this.allModels = json);
-      }
+      } 
       allModels = {type: Array};
       // THIS SHOULD BE UPDATED AT A LATER POINT, SO IT ISN'T HARDCODED BUT RATHER PULLS ALL THE 
       // DIFFERENT LEHRBERUFE FROM THE SERVER
       lehrberufe = ["Informatiker/in", "Elektroker/in", "Automobil-Mechatroniker/in"];
       modell = "";
       selectedLehrberuf = "";
-      isCompareClicked = false;
-      answerText = "";
+      isShown = false;
+      ram = {status: ""};
       async compareNotebook() {
           const result = await axios.get("https://localhost:44369/api/notebook", {
             params: {
@@ -76,8 +75,11 @@
             }
           });
           const data = result.data;
-          this.answerText = data.ramRequirement;
-          console.log(this.answerText);
+          this.ram.status = "success";
+          this.isShown = true;
+          console.log(data);
       }
+      
+
     }
 </script>

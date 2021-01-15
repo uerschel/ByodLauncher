@@ -36,9 +36,13 @@ namespace ByodLauncher.Models
             if (numberUser > numberProfession)
             {
                 return Requirement.good;
-            }else if(numberUser >= numberProfession * 0.95){
+            }
+            else if (numberUser >= numberProfession * 0.95)
+            {
                 return Requirement.ok;
-            }else if(numberUser <= numberProfession * 09.5){
+            }
+            else if (numberUser <= numberProfession * 0.95)
+            {
                 return Requirement.bad;
             }
             return Requirement.bad;
